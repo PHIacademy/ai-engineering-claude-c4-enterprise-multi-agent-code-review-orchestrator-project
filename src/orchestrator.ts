@@ -149,7 +149,7 @@ export class CodeReviewOrchestrator {
       // edits, no destructive commands) intended to run unattended in
       // CI/CD, where no human is available to answer an interactive
       // permission prompt. 'default' would hang waiting for approval.
-      permissionMode: 'bypassPermissions',
+      permissionMode: 'default',
       mcpServers: mcpServersConfig,
       allowedTools,
       agents: {
