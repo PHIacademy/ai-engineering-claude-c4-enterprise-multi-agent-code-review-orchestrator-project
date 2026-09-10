@@ -2,7 +2,7 @@
 
 A production-ready multi-agent system that automates code review using the Claude Agent SDK.
 
-> Submitted for: **AI Engineering with Claude Nanodegree** — Course 4: *Bounded Autonomy and Guardrails with Claude and Claude Code* — Final Project
+> Submitted for: **AI Engineering with Claude Nanodegree** — Course 4: *Bounded Autonomy and Guardrails with Claude and Claude Code* — Final Project (Phase 6)
 
 ## Project Overview
 
@@ -27,6 +27,61 @@ All starter tasks have been completed:
 6. **Error Handler** (`src/utils/error-handler.ts`) — `ReviewError` class, `withRetry` (exponential backoff + jitter), and `withTimeout` (`Promise.race`).
 7. **Rate Limiter** (`src/utils/rate-limiter.ts`) — Token bucket with a sliding 60-second window, concurrency limiting, and a wait queue.
 
+## Project Structure
+
+```
+├── src/
+│   ├── agents/                          # Three subagent definitions
+│   │   ├── code-quality-analyzer.ts
+│   │   ├── test-coverage-analyzer.ts
+│   │   ├── refactoring-suggester.ts
+│   │   └── index.ts
+│   ├── prompts/                         # Prompts for orchestrator and subagents
+│   │   ├── orchestrator.prompt.ts
+│   │   ├── code-quality-analyzer.prompt.ts
+│   │   ├── test-coverage-analyzer.prompt.ts
+│   │   ├── refactoring-suggester.prompt.ts
+│   │   └── index.ts
+│   ├── config/                          # MCP server configurations
+│   │   └── mcp.config.ts
+│   ├── utils/                           # Error handling, rate limiting, logging, reports
+│   │   ├── error-handler.ts
+│   │   ├── rate-limiter.ts
+│   │   ├── logger.ts                    # provided
+│   │   ├── report-generator.ts          # provided
+│   │   └── index.ts
+│   ├── types/                           # Zod schemas for all data structures
+│   │   ├── analysis-results.ts
+│   │   ├── report-types.ts
+│   │   └── index.ts
+│   ├── orchestrator.ts                  # Main coordination logic
+│   └── main.ts                          # CLI entry point with validation
+├── tests/
+│   ├── schemas.test.ts
+│   └── orchestrator.test.ts
+├── .claude/
+│   └── skills/
+│       ├── javascript-best-practices/
+│       │   └── SKILL.md
+│       └── security-analysis/           # added — see below
+│           └── SKILL.md
+├── reports/                              # Generated PR review reports (9 files)
+├── .env.example
+├── package.json
+└── tsconfig.json
+```
+
+**Note on `src/types/`:** split into `analysis-results.ts` (subagent output schemas) and `report-types.ts` (the aggregated `ReviewReport` schema), re-exported together from `index.ts` — a small deviation from a single-file layout, kept for readability as the schema set grew.
+
+### Claude Skills
+
+Two skills back the Code Quality Analyzer's `Skill` tool invocations:
+
+- **`javascript-best-practices`** — modern ES2015+ syntax, async patterns, common pitfalls, performance, and security-adjacent JS idioms.
+- **`security-analysis`** *(added)* — injection risks, auth/authorization gaps, data exposure, input validation, and other unsafe patterns, invoked when the agent suspects a security-relevant issue in the code under review.
+
+Both are referenced in `src/agents/code-quality-analyzer.ts`'s `skills` array and invoked per the guidance in `src/prompts/code-quality-analyzer.prompt.ts`.
+
 ## ⚠️ Note on Test Repository Substitution
 
 The originally assigned test repository, **`airaamane/simple-todo-app`**, returned a 404 (repository not found / inaccessible) for all three specified pull requests as of the submission date (2026-09-10). This was confirmed reproducibly across multiple runs and is documented in the generated `reports/airaamane-simple-todo-app-pr{1,2,3}.*` files, each of which contains a populated `access-error` recommendation describing the failure rather than a crash — demonstrating the orchestrator's graceful-failure handling working as designed.
@@ -43,7 +98,7 @@ with three equivalent pull requests mirroring the original scenarios:
 | #2 | Add search functionality for todos | Merged |
 | #3 | Add premium subscription features | Merged |
 
-(Note: PR #2 and #3 were intended to be left open, matching the original assignment's merged/open/open pattern, but were merged in my setup. This does not affect the review system's behavior — the orchestrator's GitHub MCP calls treat merged and open PRs identically, and the reports were generated after the merge with no change in report quality.)
+(Note: PR #2 and #3 were intended to be left open, matching the original assignment's merged/open/open pattern, but were merged by mistake during setup. This does not affect the review system's behavior — the orchestrator's GitHub MCP calls treat merged and open PRs identically, and the reports were generated after the merge with no change in report quality.)
 
 All 9 required report files (JSON, Markdown, HTML × 3 PRs) in `reports/` were generated against this substitute repository, using the same, unmodified orchestrator/CLI implementation described above:
 
