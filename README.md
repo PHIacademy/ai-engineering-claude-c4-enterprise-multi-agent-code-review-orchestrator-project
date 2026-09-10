@@ -106,8 +106,6 @@ All 9 required report files (JSON, Markdown, HTML × 3 PRs) in `reports/` were g
 - `PHIacademy-my-todo-app-pr2.{json,md,html}`
 - `PHIacademy-my-todo-app-pr3.{json,md,html}`
 
-The original (failed) `airaamane/simple-todo-app` reports are retained in `reports/` alongside the substitute reports, as evidence of the access issue and of the orchestrator's graceful error handling.
-
 ## Getting Started
 
 ### Prerequisites
