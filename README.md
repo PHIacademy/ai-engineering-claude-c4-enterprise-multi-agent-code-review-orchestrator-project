@@ -2,7 +2,7 @@
 
 A production-ready multi-agent system that automates code review using the Claude Agent SDK.
 
-> Submitted for: **AI Engineering with Claude Nanodegree** — Course 4: *Bounded Autonomy and Guardrails with Claude and Claude Code* — Final Project (Phase 6)
+> Submitted for: **AI Engineering with Claude Nanodegree** — Course 4: *Bounded Autonomy and Guardrails with Claude and Claude Code* — Final Project
 
 ## Project Overview
 
