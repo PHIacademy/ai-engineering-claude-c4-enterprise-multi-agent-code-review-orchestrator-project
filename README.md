@@ -98,7 +98,7 @@ with three equivalent pull requests mirroring the original scenarios:
 | #2 | Add search functionality for todos | Merged |
 | #3 | Add premium subscription features | Merged |
 
-(Note: PR #2 and #3 were intended to be left open, matching the original assignment's merged/open/open pattern, but were merged by mistake during setup. This does not affect the review system's behavior — the orchestrator's GitHub MCP calls treat merged and open PRs identically, and the reports were generated after the merge with no change in report quality.)
+(Note: PR #2 and #3 were open in the original **`airaamane/simple-todo-app`**, but were merged in my setup. This does not affect the review system's behavior — the orchestrator's GitHub MCP calls treat merged and open PRs identically, and the reports were generated after the merge with no change in report quality.)
 
 All 9 required report files (JSON, Markdown, HTML × 3 PRs) in `reports/` were generated against this substitute repository, using the same, unmodified orchestrator/CLI implementation described above:
 
